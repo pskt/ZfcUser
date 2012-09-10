@@ -34,6 +34,11 @@ class ModuleOptions extends AbstractOptions implements
     protected $registerRedirectRoute = 'zfcuser/login';
 
     /**
+     * @var array
+     */
+    protected $registerRedirectRouteParams = array();
+
+    /**
      * @var int
      */
     protected $loginFormTimeout = 300;
@@ -159,6 +164,28 @@ class ModuleOptions extends AbstractOptions implements
     public function getRegisterRedirectRoute()
     {
         return $this->registerRedirectRoute;
+    }
+
+    /**
+     * set register redirect route params
+     *
+     * @param array $registerRedirectRouteParams
+     * @return ModuleOptions
+     */
+    public function setRegisterRedirectRouteParams($registerRedirectRouteParams)
+    {
+        $this->registerRedirectRouteParams = $registerRedirectRouteParams;
+        return $this;
+    }
+
+    /**
+     * get register redirect route params
+     *
+     * @return array
+     */
+    public function getRegisterRedirectRouteParams()
+    {
+        return $this->registerRedirectRouteParams;
     }
 
     /**

@@ -157,6 +157,16 @@ $settings = array(
     //'register_redirect_route' => 'zfcuser/login',
 
     /**
+     * Register Redirect Route Params
+     *
+     * Params for redirect route
+     *
+     * Default value: empty array()
+     * Accepted values: A valid route params array
+     */
+    //'register_redirect_route_params' => array(),
+
+    /**
      * Password Security
      *
      * DO NOT CHANGE THE PASSWORD HASH SETTINGS FROM THEIR DEFAULTS

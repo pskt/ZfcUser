@@ -199,7 +199,10 @@ class UserController extends AbstractActionController
             return $this->forward()->dispatch('zfcuser', array('action' => 'authenticate'));
         }
 
-        return $this->redirect()->toUrl($this->url()->fromRoute($this->getOptions()->getRegisterRedirectRoute()) . ($redirect ? '?redirect='.$redirect : ''));
+        return $this->redirect()->toUrl($this->url()->fromRoute(
+            $this->getOptions()->getRegisterRedirectRoute(),
+            $this->getOptions()->getRegisterRedirectRouteParams()
+        ) . ($redirect ? '?redirect='.$redirect : ''));
     }
 
     /**
