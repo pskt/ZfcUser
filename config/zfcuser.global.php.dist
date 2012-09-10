@@ -145,6 +145,16 @@ $settings = array(
      * Accepted values: A valid route name within your application
      */
     //'logout_redirect_route' => 'zfcuser/login',
+    
+    /**
+     * Register Redirect Route
+     *
+     * Upon registration the user will be redirected to the enterd route
+     *
+     * Default value: 'zfcuser/login'
+     * Accepted values: A valid route name within your application
+     */
+    //'register_redirect_route' => 'zfcuser/login',
 
     /**
      * Password Security
