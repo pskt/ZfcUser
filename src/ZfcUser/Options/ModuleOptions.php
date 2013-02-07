@@ -54,6 +54,26 @@ class ModuleOptions extends AbstractOptions implements
     protected $loginAfterRegistration = true;
 
     /**
+     * @var int
+     */
+    protected $enableUserState = false;
+
+    /**
+     * @var int
+     */
+    protected $defaultUserState = 1;
+
+    /**
+     * @var Array
+     */
+    protected $allowedLoginStates = array( null, 1 );
+
+    /**
+     * @var array
+     */
+    protected $authAdapters = array( 100 => 'ZfcUser\Authentication\Adapter\Db' );
+
+    /**
      * @var array
      */
     protected $authIdentityFields = array( 'email' );
@@ -62,6 +82,11 @@ class ModuleOptions extends AbstractOptions implements
      * @var string
      */
     protected $userEntityClass = 'ZfcUser\Entity\User';
+
+    /**
+     * @var string
+     */
+    protected $userLoginWidgetViewTemplate = 'zfc-user/user/login.phtml';
 
     /**
      * @var bool
@@ -87,6 +112,12 @@ class ModuleOptions extends AbstractOptions implements
      * @var int
      */
     protected $passwordCost = 14;
+    
+    /**
+     * @var string
+     */
+    
+    protected $tableName = 'user';
 
     /**
      * @var array
@@ -211,6 +242,28 @@ class ModuleOptions extends AbstractOptions implements
     }
 
     /**
+     * set the view template for the user login widget
+     *
+     * @param string $userLoginWidgetViewTemplate
+     * @return ModuleOptions
+     */
+    public function setUserLoginWidgetViewTemplate($userLoginWidgetViewTemplate)
+    {
+        $this->userLoginWidgetViewTemplate = $userLoginWidgetViewTemplate;
+        return $this;
+    }
+
+    /**
+     * get the view template for the user login widget
+     *
+     * @return string
+     */
+    public function getUserLoginWidgetViewTemplate()
+    {
+        return $this->userLoginWidgetViewTemplate;
+    }
+
+    /**
      * set enable user registration
      *
      * @param bool $enableRegistration
@@ -296,6 +349,94 @@ class ModuleOptions extends AbstractOptions implements
     public function getLoginAfterRegistration()
     {
         return $this->loginAfterRegistration;
+    }
+
+    /**
+     * get user state usage for registration/login process
+     *
+     * @return int
+     */
+    public function getEnableUserState()
+    {
+        return $this->enableUserState;
+    }
+
+    /**
+     * set user state usage for registration/login process
+     *
+     * @param boolean $flag
+     * @return ModuleOptions
+     */
+    public function setEnableUserState($flag)
+    {
+        $this->enableUserState = $flag;
+        return $this;
+    }
+
+    /**
+     * get default user state on registration
+     *
+     * @return int
+     */
+    public function getDefaultUserState()
+    {
+        return $this->defaultUserState;
+    }
+
+    /**
+     * set default user state on registration
+     *
+     * @param int $state
+     * @return ModuleOptions
+     */
+    public function setDefaultUserState($state)
+    {
+        $this->defaultUserState = $state;
+        return $this;
+    }
+
+    /**
+     * get list of states to allow user login
+     *
+     * @return int
+     */
+    public function getAllowedLoginStates()
+    {
+        return $this->allowedLoginStates;
+    }
+
+    /**
+     * set list of states to allow user login
+     *
+     * @param Array $states
+     * @return ModuleOptions
+     */
+    public function setAllowedLoginStates(Array $states)
+    {
+        $this->allowedLoginStates = $states;
+        return $this;
+    }
+
+    /**
+     * set auth adapters
+     *
+     * @param array $authAdapterss
+     * @return ModuleOptions
+     */
+    public function setAuthAdapters($authAdapters)
+    {
+        $this->authAdapters = $authAdapters;
+        return $this;
+    }
+
+    /**
+     * get auth adapters
+     *
+     * @return array
+     */
+    public function getAuthAdapters()
+    {
+        return $this->authAdapters;
     }
 
     /**
@@ -428,6 +569,24 @@ class ModuleOptions extends AbstractOptions implements
     public function getPasswordCost()
     {
         return $this->passwordCost;
+    }
+    
+    /**
+     * set user table name
+     * 
+     * @param string $tableName
+     */
+    public function setTableName($tableName){
+        $this->tableName=$tableName;
+    }
+    
+    /**
+     * get user table name
+     * 
+     * @return string
+     */
+    public function getTableName(){
+        return $this->tableName;
     }
 
     /**

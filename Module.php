@@ -6,6 +6,7 @@ use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
+use Zend\Stdlib\Hydrator\ClassMethods;
 
 class Module implements
     AutoloaderProviderInterface,
@@ -31,6 +32,23 @@ class Module implements
         return include __DIR__ . '/config/module.config.php';
     }
 
+    public function getControllerPluginConfig()
+    {
+        return array(
+            'factories' => array(
+                'zfcUserAuthentication' => function ($sm) {
+                    $serviceLocator = $sm->getServiceLocator();
+                    $authService = $serviceLocator->get('zfcuser_auth_service');
+                    $authAdapter = $serviceLocator->get('ZfcUser\Authentication\Adapter\AdapterChain');
+                    $controllerPlugin = new Controller\Plugin\ZfcUserAuthentication;
+                    $controllerPlugin->setAuthService($authService);
+                    $controllerPlugin->setAuthAdapter($authAdapter);
+                    return $controllerPlugin;
+                },
+            ),
+        );
+    }
+
     public function getViewHelperConfig()
     {
         return array(
@@ -50,6 +68,7 @@ class Module implements
                 'zfcUserLoginWidget' => function ($sm) {
                     $locator = $sm->getServiceLocator();
                     $viewHelper = new View\Helper\ZfcUserLoginWidget;
+                    $viewHelper->setViewTemplate($locator->get('zfcuser_module_options')->getUserLoginWidgetViewTemplate());
                     $viewHelper->setLoginForm($locator->get('zfcuser_login_form'));
                     return $viewHelper;
                 },
@@ -66,6 +85,7 @@ class Module implements
                 'ZfcUser\Authentication\Storage\Db' => 'ZfcUser\Authentication\Storage\Db',
                 'ZfcUser\Form\Login'                => 'ZfcUser\Form\Login',
                 'zfcuser_user_service'              => 'ZfcUser\Service\User',
+                'zfcuser_register_form_hydrator'    => 'Zend\Stdlib\Hydrator\ClassMethods',
             ),
             'factories' => array(
 
@@ -87,7 +107,7 @@ class Module implements
 
                 'zfcuser_login_form' => function($sm) {
                     $options = $sm->get('zfcuser_module_options');
-                    $form = new Form\Login(null, $sm->get('zfcuser_module_options'));
+                    $form = new Form\Login(null, $options);
                     $form->setInputFilter(new Form\LoginFilter($options));
                     return $form;
                 },
@@ -142,6 +162,7 @@ class Module implements
                     $entityClass = $options->getUserEntityClass();
                     $mapper->setEntityPrototype(new $entityClass);
                     $mapper->setHydrator(new Mapper\UserHydrator());
+                    $mapper->setTableName($options->getTableName());
                     return $mapper;
                 },
             ),
